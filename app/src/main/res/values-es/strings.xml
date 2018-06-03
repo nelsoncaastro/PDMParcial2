@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Barbe à papa</string>
-    <string name="News">News</string>
+    <string name="News">Noticias</string>
     <string name="Game1">League of Legends</string>
     <string name="Game2">Dota2</string>
     <string name="Game3">CS: GO</string>
