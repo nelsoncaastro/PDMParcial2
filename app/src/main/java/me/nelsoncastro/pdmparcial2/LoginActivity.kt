@@ -2,10 +2,81 @@ package me.nelsoncastro.pdmparcial2
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import com.google.gson.GsonBuilder
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
+import me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle
+import me.nelsoncastro.pdmparcial2.webserver.GameNewsAPI
+import me.nelsoncastro.pdmparcial2.webserver.NouvelleDeserializer
+import okhttp3.Credentials
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 class LoginActivity: AppCompatActivity() {
+
+    var usertemp: EditText? = null
+    var passtemp: EditText? = null
+    var tokentemp: TextView? = null
+    var btntemp: Button? = null
+    val compositeDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        usertemp = findViewById(R.id.edittemp)
+        passtemp = findViewById(R.id.edittemp2)
+        btntemp = findViewById(R.id.buttontemp)
+        tokentemp = findViewById(R.id.tokentemp)
+
+        val GameNewsAPI = createGameNewsAPI()
+
+        btntemp?.setOnClickListener {
+            compositeDisposable.add(GameNewsAPI
+                    .login(usertemp?.text.toString(), passtemp?.text.toString())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(loginObserver()))
+        }
+    }
+
+    private fun createGameNewsAPI(): GameNewsAPI{
+        val gson = GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .registerTypeAdapter(Nouvelle::class.java, NouvelleDeserializer())
+                .create()
+        val okHttpClient = OkHttpClient
+                .Builder()
+                .addInterceptor {
+                    it.proceed(it.request().newBuilder().header("Authorization",Credentials.basic("00043516@uca.edu.sv", "")).build())
+                }.build()
+        val retrofit = Retrofit.Builder()
+                .baseUrl("http://gamenewsuca.herokuapp.com")
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+        return retrofit.create(GameNewsAPI::class.java)
+    }
+
+    private fun loginObserver(): DisposableSingleObserver<String>{
+        return object : DisposableSingleObserver<String>(){
+            override fun onSuccess(token: String) {
+                tokentemp?.text = token.subSequence(10,token.lastIndex-1)
+            }
+            override fun onError(e: Throwable) {
+                tokentemp?.text = e.printStackTrace().toString()
+            }
+
+        }
     }
 }

@@ -6,4 +6,6 @@
     <string name="Settings">Settings</string>
     <string name="Favorites">Favorites</string>
     <string name="query_hint_main">Search</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
 </resources>

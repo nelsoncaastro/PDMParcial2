@@ -14,9 +14,8 @@ class EtudiantDeserializer: JsonDeserializer<Etudiant> {
         val repoJsonObject = json.asJsonObject
         val etudiant = Etudiant(repoJsonObject.get("_id").asString,repoJsonObject.get("user").asString,repoJsonObject.get("password").asString)
         val groupListType = object : TypeToken<ArrayList<Nouvelle>>(){}.type
-        val nouvellesfavoris = json.asJsonObject.get("favoriteNews").asJsonArray
         val favoris: ArrayList<Nouvelle> = ArrayList()
-        nouvellesfavoris.forEach {
+        json.asJsonObject.get("favoriteNews").asJsonArray?.forEach {
             favoris.add(Nouvelle(
                     it.asJsonObject.get("_id").asString,
                     it.asJsonObject.get("title").asString,
@@ -27,7 +26,7 @@ class EtudiantDeserializer: JsonDeserializer<Etudiant> {
                     it.asJsonObject.get("created_date").asString
             ))
         }
-        etudiant.favoriteNews = favoris
+        etudiant.favoriteNews = if(favoris.isEmpty()) null else favoris
         return etudiant
     }
 }
