@@ -1,5 +1,8 @@
 package me.nelsoncastro.pdmparcial2
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
@@ -24,7 +27,6 @@ class LoginActivity: AppCompatActivity() {
 
     var usertemp: EditText? = null
     var passtemp: EditText? = null
-    var tokentemp: TextView? = null
     var btntemp: Button? = null
     val compositeDisposable = CompositeDisposable()
 
@@ -35,7 +37,6 @@ class LoginActivity: AppCompatActivity() {
         usertemp = findViewById(R.id.edittemp)
         passtemp = findViewById(R.id.edittemp2)
         btntemp = findViewById(R.id.buttontemp)
-        tokentemp = findViewById(R.id.tokentemp)
 
         val GameNewsAPI = createGameNewsAPI()
 
@@ -71,10 +72,15 @@ class LoginActivity: AppCompatActivity() {
     private fun loginObserver(): DisposableSingleObserver<String>{
         return object : DisposableSingleObserver<String>(){
             override fun onSuccess(token: String) {
-                tokentemp?.text = token.subSequence(10,token.lastIndex-1)
+                val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+                with(sharedPref.edit()){
+                    putString(getString(R.string.saved_token), token.subSequence(10,token.lastIndex-1).toString())
+                }
+                startActivity(Intent(baseContext, MainActivity::class.java))
+                finish()
             }
             override fun onError(e: Throwable) {
-                tokentemp?.text = e.printStackTrace().toString()
+                //tokentemp?.text = e.printStackTrace().toString()
             }
 
         }

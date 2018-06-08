@@ -9,4 +9,6 @@
     <string name="query_hint_main">Search</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
+    <string name="button_login">Dale candela</string>
+    <string name="saved_token">token</string>
 </resources>
