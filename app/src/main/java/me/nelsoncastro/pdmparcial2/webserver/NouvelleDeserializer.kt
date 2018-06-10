@@ -12,9 +12,9 @@ class NouvelleDeserializer: JsonDeserializer<Nouvelle> {
                     json.asJsonObject.get("_id").asString,
                     json.asJsonObject.get("title").asString,
                     json.asJsonObject.get("body").asString,
-                    json.asJsonObject.get("description").asString,
+                    if (json.asJsonObject.get("description") != null) json.asJsonObject.get("description").asString else " ",
                     json.asJsonObject.get("game").asString,
-                    json.asJsonObject.get("coverImage").asString,
+                    if (json.asJsonObject.get("coverImage") != null) json.asJsonObject.get("coverImage").asString else "https://i.redditmedia.com/ETxJKtze1TEZVxiSnSnhYQhuCMA8JZyI9SqDih32Dw4.jpg?s=b59c58f0371a54741efe66b89c546dd9",
                     json.asJsonObject.get("created_date").asString)
     }
 }

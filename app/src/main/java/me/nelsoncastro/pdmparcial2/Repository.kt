@@ -38,7 +38,7 @@ class Repository(application: Application) {
 
 
     fun uptodateNouvelles(auth: String){
-        compositeeDisposable.add(GameNewsAPI.getNews(auth)
+        compositeeDisposable.add(GameNewsAPI!!.getNews(auth)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(getNewss()))
