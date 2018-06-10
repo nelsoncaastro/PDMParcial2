@@ -27,10 +27,12 @@ class NouvelleAdapter(private val contexte: Context): RecyclerView.Adapter<Nouve
         val curry = mNouvelle!![position]
         holder.titlebig.text = curry.title
         holder.descbig.text = curry.title
-        /**Picasso.with(holder.itemView.context)
+        Picasso.with(holder.itemView.context)
                 .load(curry.coverImage)
+                .resize((contexte.resources.displayMetrics.widthPixels/contexte.resources.displayMetrics.density).toInt(),250)
                 .centerCrop()
-                .into(holder.imgbig)*/
+                .error(R.drawable.himym)
+                .into(holder.imgbig)
     }
 
     internal fun setNouvelles(nou: List<Nouvelle>){
