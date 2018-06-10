@@ -5,9 +5,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.google.gson.GsonBuilder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -50,15 +52,6 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun createGameNewsAPI(): GameNewsAPI{
-        val gson = GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .registerTypeAdapter(Nouvelle::class.java, NouvelleDeserializer())
-                .create()
-        val okHttpClient = OkHttpClient
-                .Builder()
-                .addInterceptor {
-                    it.proceed(it.request().newBuilder().header("Authorization",Credentials.basic("00043516@uca.edu.sv", "")).build())
-                }.build()
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://gamenewsuca.herokuapp.com")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -72,10 +65,13 @@ class LoginActivity: AppCompatActivity() {
     private fun loginObserver(): DisposableSingleObserver<String>{
         return object : DisposableSingleObserver<String>(){
             override fun onSuccess(token: String) {
-                val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+                val sharedPref = getSharedPreferences("log", Context.MODE_PRIVATE) ?: return
                 with(sharedPref.edit()){
                     putString(getString(R.string.saved_token), token.subSequence(10,token.lastIndex-1).toString())
+                    apply()
                 }
+                //Log.d("MENSAJE",token.subSequence(10,token.lastIndex-1).toString())
+                Toast.makeText(applicationContext, sharedPref.getString(getString(R.string.saved_token), "Nelson mi dog"),Toast.LENGTH_LONG).show()
                 startActivity(Intent(baseContext, MainActivity::class.java))
                 finish()
             }

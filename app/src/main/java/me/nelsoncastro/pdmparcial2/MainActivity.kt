@@ -10,16 +10,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPreferences = getPreferences(Context.MODE_PRIVATE) ?: return
-        val token = sharedPreferences.getString()
+
+        val sharedPref = this.getSharedPreferences("log", Context.MODE_PRIVATE) ?: return
+        //checkToken(sharedPref.getString(getString(R.string.saved_token), "nelson dog"))
+        checkToken(if (sharedPref.contains(getString(R.string.saved_token))) sharedPref.getString(getString(R.string.saved_token),"nelson dog") else "nelson dog")
         setContentView(R.layout.activity_main)
 
 
     }
 
-    private fun checkSharedPref(sharedPreferences: SharedPreferences){
-        startActivity(Intent(this.baseContext, LoginActivity::class.java))
-        finish()
+    private fun checkToken(value: String?){
+        if (value.equals("nelson dog")) {
+            startActivity(Intent(this.baseContext, LoginActivity::class.java))
+            finish()
+        }
     }
 
 }
