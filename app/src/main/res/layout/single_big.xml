@@ -40,6 +40,8 @@
                 android:text="Lorem Ipsum"
                 android:textAppearance="@style/CollapsedAppBar"
                 android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:lines="1"
                 android:layout_marginLeft="5dp"
                 />
             <android.support.v4.widget.NestedScrollView
