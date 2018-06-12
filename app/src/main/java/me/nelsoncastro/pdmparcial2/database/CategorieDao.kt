@@ -5,17 +5,17 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import me.nelsoncastro.pdmparcial2.entities.Nouvelle
+import me.nelsoncastro.pdmparcial2.entities.Categorie
 
 @Dao
-interface NouvelleDao {
+interface CategorieDao {
 
-    @Query("SELECT * FROM nouvelle")
-    fun getAll(): LiveData<List<Nouvelle>>
+    @Query("SELECT * FROM categorie")
+    fun getAll(): LiveData<List<Categorie>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(nouvelle: Nouvelle)
+    fun insert(categorie: Categorie)
 
-    @Query("DELETE FROM nouvelle")
+    @Query("DELETE FROM categorie")
     fun deleteAll()
 }

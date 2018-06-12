@@ -8,43 +8,42 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import me.nelsoncastro.pdmparcial2.database.NouvelleDao
+import me.nelsoncastro.pdmparcial2.database.CategorieDao
 import me.nelsoncastro.pdmparcial2.database.RoomDatabase
-import me.nelsoncastro.pdmparcial2.entities.Nouvelle
+import me.nelsoncastro.pdmparcial2.entities.Categorie
 import me.nelsoncastro.pdmparcial2.webserver.GameNewsAPI
-import me.nelsoncastro.pdmparcial2.webserver.deserializers.NouvelleDeserializer
+import me.nelsoncastro.pdmparcial2.webserver.deserializers.CategorieDeserializer
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.ArrayList
 
-class NouvelleRepository(application: Application) {
-
-    var mNouvelleDao: NouvelleDao? = null
-    var mAllNouvelle: LiveData<List<Nouvelle>>? = null
+class CategorieRepository(application: Application) {
+    var mCategorieDao: CategorieDao? = null
+    var mAllCategorie: LiveData<List<Categorie>>? = null
     var GameNewsAPI: GameNewsAPI? = null
     val compositeDisposable = CompositeDisposable()
     val compositeeDisposable = CompositeDisposable()
 
     init {
         val db = RoomDatabase.getDatabase(application)
-        mNouvelleDao = db!!.nouvelleDao()
-        mAllNouvelle = mNouvelleDao?.getAll()
+        mCategorieDao = db!!.categorieDao()
+        mAllCategorie = mCategorieDao?.getAll()
         GameNewsAPI = createGameNewsAPI()
     }
 
-    fun getAll(): LiveData<List<Nouvelle>> = mAllNouvelle!!
+    fun getAll(): LiveData<List<Categorie>> = mAllCategorie!!
 
-
-    fun uptodateNouvelles(auth: String){
-        compositeeDisposable.add(GameNewsAPI!!.getNews(auth)
+    fun uptodateCategories(auth: String){
+        compositeeDisposable.add(GameNewsAPI!!.getCategories(auth)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(getNewss()))
+                .subscribeWith(getCategoriess()))
     }
 
-    fun insert(nouvelle: me.nelsoncastro.pdmparcial2.entities.Nouvelle){
+    fun insert(categorie: Categorie){
         compositeDisposable.add(Observable
-                .fromCallable { mNouvelleDao!!.insert(nouvelle) }
+                .fromCallable { mCategorieDao!!.insert(categorie) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe())
@@ -53,7 +52,7 @@ class NouvelleRepository(application: Application) {
     private fun createGameNewsAPI(): GameNewsAPI{
         val gson = GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .registerTypeAdapter(me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle::class.java, NouvelleDeserializer())
+                .registerTypeAdapter(ArrayList::class.java, CategorieDeserializer())
                 .create()
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://gamenewsuca.herokuapp.com")
@@ -64,11 +63,11 @@ class NouvelleRepository(application: Application) {
         return retrofit.create(me.nelsoncastro.pdmparcial2.webserver.GameNewsAPI::class.java)
     }
 
-    private fun getNewss(): DisposableSingleObserver<List<me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle>>{
-        return  object : DisposableSingleObserver<List<me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle>>(){
-            override fun onSuccess(nouvelles: List<me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle>) {
-                if (!nouvelles.isEmpty()){
-                    for(nou in nouvelles) insert(Nouvelle(nou._id,nou.title,nou.body,nou.description,nou.game,nou.coverImage,nou.created_date))
+    private fun getCategoriess(): DisposableSingleObserver<List<String>>{
+        return object : DisposableSingleObserver<List<String>>(){
+            override fun onSuccess(categories : List<String>) {
+                if (!categories.isEmpty()){
+                    for (cat in categories) insert(Categorie(cat))
                 }
             }
 

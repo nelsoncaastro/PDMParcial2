@@ -1,4 +1,4 @@
 package me.nelsoncastro.pdmparcial2.entitieesapi
 
-class Sidentifier {
+data class Categorie(var name: String="") {
 }

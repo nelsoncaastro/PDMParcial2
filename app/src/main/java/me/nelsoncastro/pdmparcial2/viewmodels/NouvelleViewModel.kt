@@ -15,7 +15,7 @@ class NouvelleViewModel(application: Application): AndroidViewModel(application)
         allNouvelles = mRepository?.getAll()
     }
 
-    fun getAllNouvelles(): LiveData<List<Nouvelle>> {return  allNouvelles!!}
+    fun getAllNouvelles(): LiveData<List<Nouvelle>> = allNouvelles!!
 
     fun putUp2date(auth: String){
         mRepository!!.uptodateNouvelles(auth)
