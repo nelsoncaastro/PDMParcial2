@@ -12,12 +12,12 @@ import android.view.View
 import android.view.ViewGroup
 import me.nelsoncastro.pdmparcial2.NouvelleAdapter
 import me.nelsoncastro.pdmparcial2.R
-import me.nelsoncastro.pdmparcial2.ViewModel
+import me.nelsoncastro.pdmparcial2.viewmodels.NouvelleViewModel
 import me.nelsoncastro.pdmparcial2.entities.Nouvelle
 
 class Home_Fraggy : Fragment() {
 
-    var mNouvelleView: ViewModel? = null
+    var mNouvelleView: NouvelleViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +43,7 @@ class Home_Fraggy : Fragment() {
         recyclerView.layoutManager = manager
         recyclerView.adapter = adapter
 
-        mNouvelleView = ViewModelProviders.of(this).get(ViewModel::class.java)
+        mNouvelleView = ViewModelProviders.of(this).get(NouvelleViewModel::class.java)
         mNouvelleView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"))
         mNouvelleView!!.getAllNouvelles().observe(this, Observer<List<Nouvelle>>{ t ->  adapter.setNouvelles(t!!)})
     }

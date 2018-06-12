@@ -2,24 +2,16 @@ package me.nelsoncastro.pdmparcial2
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import com.google.gson.GsonBuilder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle
 import me.nelsoncastro.pdmparcial2.webserver.GameNewsAPI
-import me.nelsoncastro.pdmparcial2.webserver.NouvelleDeserializer
-import okhttp3.Credentials
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory

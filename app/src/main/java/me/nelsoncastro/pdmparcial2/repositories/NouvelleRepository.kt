@@ -1,4 +1,4 @@
-package me.nelsoncastro.pdmparcial2
+package me.nelsoncastro.pdmparcial2.repositories
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
@@ -12,12 +12,12 @@ import me.nelsoncastro.pdmparcial2.database.NouvelleDao
 import me.nelsoncastro.pdmparcial2.database.RoomDatabase
 import me.nelsoncastro.pdmparcial2.entities.Nouvelle
 import me.nelsoncastro.pdmparcial2.webserver.GameNewsAPI
-import me.nelsoncastro.pdmparcial2.webserver.NouvelleDeserializer
+import me.nelsoncastro.pdmparcial2.webserver.deserializers.NouvelleDeserializer
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class Repository(application: Application) {
+class NouvelleRepository(application: Application) {
 
     var mNouvelleDao: NouvelleDao? = null
     var mAllNouvelle: LiveData<List<Nouvelle>>? = null

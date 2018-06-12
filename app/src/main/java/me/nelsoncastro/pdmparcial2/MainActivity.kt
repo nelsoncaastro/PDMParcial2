@@ -66,6 +66,10 @@ class MainActivity : AppCompatActivity() {
         mDrawerLayout!!.closeDrawers()
     }
 
+    private fun addMenuItem(catty: List<String>){
+
+    }
+
     private fun replaceFragment(fragment: Fragment?){
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.containermain, fragment)

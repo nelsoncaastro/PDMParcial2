@@ -1,4 +1,4 @@
-package me.nelsoncastro.pdmparcial2.webserver
+package me.nelsoncastro.pdmparcial2.webserver.deserializers
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
