@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setHome(){
-        mNavigationView!!.menu.getItem(0).isChecked = true
+        mNavigationView!!.menu.findItem(R.id.item1).isChecked = true
         val fragment = Home_Fraggy.newInstance()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.containermain, fragment)

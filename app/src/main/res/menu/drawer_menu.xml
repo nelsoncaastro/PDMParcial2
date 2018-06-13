@@ -5,6 +5,7 @@
             android:title="Nouvelles menu">
             <menu>
                 <group
+                    android:id="@+id/group1"
                     android:checkableBehavior="single">
                     <item
                         android:id="@+id/item1"
@@ -22,13 +23,17 @@
             android:icon="@drawable/ic_whatshot"
             android:title="Jeux">
             <menu>
+                <group
+                    android:id="@+id/group2"
+                    android:checkableBehavior="single">
 
+                </group>
             </menu>
         </item>
 
         <item
             android:id="@+id/extra_section"
-            android:title="">
+            android:title="Extra">
             <menu>
                 <group
                     android:id="@+id/group3" android:checkableBehavior="single">
