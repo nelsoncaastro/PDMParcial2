@@ -23,6 +23,7 @@ abstract class RoomDatabase: android.arch.persistence.room.RoomDatabase() {
                 synchronized(RoomDatabase::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                             RoomDatabase::class.java, "room_database")
+                            .fallbackToDestructiveMigration()
                             .build()
                 }
             }

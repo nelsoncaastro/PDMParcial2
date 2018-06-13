@@ -1,6 +1,8 @@
 package me.nelsoncastro.pdmparcial2
 
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -10,10 +12,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import me.nelsoncastro.pdmparcial2.entities.Categorie
 import me.nelsoncastro.pdmparcial2.fragments.Home_Fraggy
+import me.nelsoncastro.pdmparcial2.viewmodels.CategorieViewModel
 
 class MainActivity : AppCompatActivity() {
 
+    var mCategoryView: CategorieViewModel? = null
     var mDrawerLayout: DrawerLayout? = null
     var mNavigationView: NavigationView? = null
 
@@ -33,6 +38,12 @@ class MainActivity : AppCompatActivity() {
 
         mDrawerLayout = findViewById(R.id.drawerLayout)
         mNavigationView = findViewById(R.id.navigationView)
+
+
+
+        mCategoryView = ViewModelProviders.of(this).get(CategorieViewModel::class.java)
+        mCategoryView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"))
+        mCategoryView!!.getAllCategories().observe(this, Observer<List<Categorie>>{ t -> addMenuItem(t!!) })
 
         setHome()
 
@@ -66,8 +77,11 @@ class MainActivity : AppCompatActivity() {
         mDrawerLayout!!.closeDrawers()
     }
 
-    private fun addMenuItem(catty: List<String>){
-
+    private fun addMenuItem(catty: List<Categorie>){
+        mNavigationView!!.menu.findItem(R.id.jeux).subMenu.clear()
+        for(cat in catty){
+            mNavigationView!!.menu.findItem(R.id.jeux).subMenu.add(cat.name)
+        }
     }
 
     private fun replaceFragment(fragment: Fragment?){
