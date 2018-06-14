@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nouvelle_section"
-            android:title="Nouvelles menu">
+        <item
+            android:id="@+id/nouvelle_section"
+            android:title="@string/nouvelles_menu">
             <menu>
                 <group
                     android:id="@+id/group1"
@@ -21,7 +22,7 @@
         <item
             android:id="@+id/jeux"
             android:icon="@drawable/ic_whatshot"
-            android:title="Jeux">
+            android:title="@string/jeux_menu">
             <menu>
                 <group
                     android:id="@+id/group2"
@@ -33,7 +34,7 @@
 
         <item
             android:id="@+id/extra_section"
-            android:title="Extra">
+            android:title="@string/extra_menu">
             <menu>
                 <group
                     android:id="@+id/group3" android:checkableBehavior="single">

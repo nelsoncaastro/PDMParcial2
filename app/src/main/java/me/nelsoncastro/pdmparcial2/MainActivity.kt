@@ -12,7 +12,9 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.widget.Toast
 import me.nelsoncastro.pdmparcial2.entities.Categorie
+import me.nelsoncastro.pdmparcial2.fragments.Fraggy_Model
 import me.nelsoncastro.pdmparcial2.fragments.Home_Fraggy
 import me.nelsoncastro.pdmparcial2.viewmodels.CategorieViewModel
 
@@ -21,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     var mCategoryView: CategorieViewModel? = null
     var mDrawerLayout: DrawerLayout? = null
     var mNavigationView: NavigationView? = null
+    var nomitems: Int? = null
+    var toolbar: Toolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,25 +37,27 @@ class MainActivity : AppCompatActivity() {
         checkToken(if (sharedPref.contains(getString(R.string.saved_token))) sharedPref.getString(getString(R.string.saved_token),"nelson dog") else "nelson dog")
         setContentView(R.layout.activity_main)
 
-        val toolbar = findViewById<Toolbar>(R.id.tooly)
+        toolbar = findViewById(R.id.tooly)
         setSupportActionBar(toolbar)
 
         mDrawerLayout = findViewById(R.id.drawerLayout)
         mNavigationView = findViewById(R.id.navigationView)
 
-
-
         mCategoryView = ViewModelProviders.of(this).get(CategorieViewModel::class.java)
         mCategoryView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"))
-        mCategoryView!!.getAllCategories().observe(this, Observer<List<Categorie>>{ t -> addMenuItem(t!!) })
+        mCategoryView!!.getAllCategories().observe(this, Observer<List<Categorie>>{ t ->addMenuItem(t!!)  })
 
         setHome()
 
         mNavigationView!!.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
+
+            nomitems = (mNavigationView!!.menu.findItem(R.id.nouvelle_section).subMenu.size()+ mNavigationView!!.menu.findItem(R.id.jeux).subMenu.size()+ mNavigationView!!.menu.findItem(R.id.extra_section).subMenu.size())
+
             selectDrawerItem(menuItem)
             true
         }
+
+
     }
 
     private fun checkToken(value: String?){
@@ -62,7 +68,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun selectDrawerItem(item: MenuItem){
-        var fragment: Fragment? = null
+        /**var fragment: Fragment? = null
+
+        //Toast.makeText(this, nomitems.toString(), Toast.LENGTH_LONG).show()
+
+        //for(0 until combien)
+
+
+
+        /**val fragment: Fragment = Fragment().apply {
+            Bundle().putString()
+        }**/
+
         val fragmentClass = when(item.itemId){
             R.id.item1 -> Home_Fraggy::class.java
             else -> Home_Fraggy::class.java
@@ -72,7 +89,15 @@ class MainActivity : AppCompatActivity() {
             fragment = fragmentClass.newInstance() as Fragment
         } catch (e: ClassCastException){
             e.printStackTrace()
+        }**/
+        //val fragment = Home_Fraggy.newInstance(item.title.toString())
+        val fragment = when(item.itemId){
+            R.id.item1 -> Home_Fraggy.newInstance("home")
+            R.id.item2 -> Home_Fraggy.newInstance("favoris")
+            else -> Fraggy_Model.newInstance(item.title.toString())
         }
+        toolbar?.title = item.title.toString()
+        item.isChecked = true
         replaceFragment(fragment)
         mDrawerLayout!!.closeDrawers()
     }
@@ -80,7 +105,10 @@ class MainActivity : AppCompatActivity() {
     private fun addMenuItem(catty: List<Categorie>){
         mNavigationView!!.menu.findItem(R.id.jeux).subMenu.clear()
         for(cat in catty){
-            mNavigationView!!.menu.findItem(R.id.jeux).subMenu.add(cat.name)
+            mNavigationView!!
+                    .menu.findItem(R.id.jeux)
+                    .subMenu.add(cat.name.toUpperCase())
+                    .setCheckable(true).setIcon(R.drawable.ic_game_generic)
         }
     }
 
@@ -92,7 +120,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setHome(){
         mNavigationView!!.menu.findItem(R.id.item1).isChecked = true
-        val fragment = Home_Fraggy.newInstance()
+        val fragment = Home_Fraggy.newInstance("home")
         supportFragmentManager.beginTransaction()
                 .replace(R.id.containermain, fragment)
                 .commit()

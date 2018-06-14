@@ -15,12 +15,20 @@ import me.nelsoncastro.pdmparcial2.R
 import me.nelsoncastro.pdmparcial2.viewmodels.NouvelleViewModel
 import me.nelsoncastro.pdmparcial2.entities.Nouvelle
 
+
+
 class Home_Fraggy : Fragment() {
 
-    var mNouvelleView: NouvelleViewModel? = null
+    private val CLE = "CLE"
+    private var mNouvelleView: NouvelleViewModel? = null
+    private var type: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            type = it.getString(CLE)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -49,6 +57,12 @@ class Home_Fraggy : Fragment() {
     }
 
     companion object {
-        fun newInstance() = Home_Fraggy()
+        @JvmStatic
+        fun newInstance(type: String) =
+                Home_Fraggy().apply {
+                    arguments = Bundle().apply {
+                        putString(CLE, type)
+                    }
+                }
     }
 }

@@ -10,4 +10,8 @@
     <string name="password_hint">Password</string>
     <string name="button_login">Dale candela</string>
     <string name="saved_token">token</string>
+    <string name="tab1">News</string>
+    <string name="tab2">Players</string>
+    <string name="nouvelles_menu">General</string>
+    <string name="extra_menu">Extra</string>
 </resources>
