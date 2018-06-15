@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,9 @@ class Fraggy_Model: Fragment() {
 
         val tabbything = view.findViewById<TabLayout>(R.id.tabby)
         val viewything = view.findViewById<ViewPager>(R.id.viewy)
-        val adapter = ViewPagerAdapter(view.context,fragmentManager!!)
+        val swipy = view.findViewById<SwipeRefreshLayout>(R.id.refreshy_model)
+        val adapter = ViewPagerAdapter(view.context,fragmentManager!!, type!!)
+        viewything.adapter = adapter
 
         tabbything.setupWithViewPager(viewything)
     }

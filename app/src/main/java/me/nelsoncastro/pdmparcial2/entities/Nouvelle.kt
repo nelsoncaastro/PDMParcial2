@@ -11,5 +11,6 @@ data class Nouvelle(@PrimaryKey @ColumnInfo(name = "id") var _id: String = "",
                     @ColumnInfo(name = "description") var description: String = "",
                     @ColumnInfo(name = "game") var game: String = "",
                     @ColumnInfo(name = "image") var coverImage: String = "",
-                    @ColumnInfo(name = "date") var created_date: String = "") {
+                    @ColumnInfo(name = "date") var created_date: Int = 0,
+                    @ColumnInfo(name = "favoris") var favoris: Int = 0) {
 }

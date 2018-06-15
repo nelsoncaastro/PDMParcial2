@@ -10,8 +10,17 @@ import me.nelsoncastro.pdmparcial2.entities.Nouvelle
 @Dao
 interface NouvelleDao {
 
-    @Query("SELECT * FROM nouvelle")
+    @Query("SELECT * FROM nouvelle ORDER BY date DESC")
     fun getAll(): LiveData<List<Nouvelle>>
+
+    @Query("SELECT * FROM nouvelle WHERE game =:jeux")
+    fun getNouvelleByJeux(jeux: String): LiveData<List<Nouvelle>>
+
+    @Query("UPDATE nouvelle SET favoris=:value WHERE id=:id")
+    fun setFavoris(value: Int, id: String)
+
+    @Query("SELECT * FROM nouvelle WHERE favoris=1")
+    fun getAllNouvelleFavoris(): LiveData<List<Nouvelle>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(nouvelle: Nouvelle)

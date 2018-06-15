@@ -8,7 +8,7 @@ import me.nelsoncastro.pdmparcial2.entities.Etudiant
 import me.nelsoncastro.pdmparcial2.entities.Joueur
 import me.nelsoncastro.pdmparcial2.entities.Nouvelle
 
-@Database(entities = [(Nouvelle::class), (Joueur::class), (Etudiant::class), (Categorie::class)], version = 2)
+@Database(entities = [(Nouvelle::class), (Joueur::class), (Etudiant::class), (Categorie::class)], version = 3)
 abstract class RoomDatabase: android.arch.persistence.room.RoomDatabase() {
     abstract fun nouvelleDao(): NouvelleDao
     abstract fun joueurDao(): JoueurDao
@@ -23,7 +23,6 @@ abstract class RoomDatabase: android.arch.persistence.room.RoomDatabase() {
                 synchronized(RoomDatabase::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                             RoomDatabase::class.java, "room_database")
-                            .fallbackToDestructiveMigration()
                             .build()
                 }
             }

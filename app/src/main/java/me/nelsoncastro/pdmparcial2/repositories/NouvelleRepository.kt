@@ -2,6 +2,8 @@ package me.nelsoncastro.pdmparcial2.repositories
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
+import android.support.v4.widget.SwipeRefreshLayout
+import android.util.Log
 import com.google.gson.GsonBuilder
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,6 +18,9 @@ import me.nelsoncastro.pdmparcial2.webserver.deserializers.NouvelleDeserializer
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NouvelleRepository(application: Application) {
 
@@ -24,6 +29,7 @@ class NouvelleRepository(application: Application) {
     var GameNewsAPI: GameNewsAPI? = null
     val compositeDisposable = CompositeDisposable()
     val compositeeDisposable = CompositeDisposable()
+    val compositeeeDisposable = CompositeDisposable()
 
     init {
         val db = RoomDatabase.getDatabase(application)
@@ -34,15 +40,26 @@ class NouvelleRepository(application: Application) {
 
     fun getAll(): LiveData<List<Nouvelle>> = mAllNouvelle!!
 
+    fun getAllByJeux(jeux: String): LiveData<List<Nouvelle>> = mNouvelleDao!!.getNouvelleByJeux(jeux)
 
-    fun uptodateNouvelles(auth: String){
+    fun getAllFavoris(): LiveData<List<Nouvelle>> = mNouvelleDao!!.getAllNouvelleFavoris()
+
+    fun setFavoris(value: Int, id: String) {
+        compositeeeDisposable.add(Observable
+                .fromCallable { mNouvelleDao!!.setFavoris(value, id) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe())
+    }
+
+    fun uptodateNouvelles(auth: String, Refreshy: SwipeRefreshLayout) {
         compositeeDisposable.add(GameNewsAPI!!.getNews(auth)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(getNewss()))
+                .subscribeWith(getNewss(Refreshy)))
     }
 
-    fun insert(nouvelle: me.nelsoncastro.pdmparcial2.entities.Nouvelle){
+    fun insert(nouvelle: me.nelsoncastro.pdmparcial2.entities.Nouvelle) {
         compositeDisposable.add(Observable
                 .fromCallable { mNouvelleDao!!.insert(nouvelle) }
                 .subscribeOn(Schedulers.io())
@@ -50,7 +67,7 @@ class NouvelleRepository(application: Application) {
                 .subscribe())
     }
 
-    private fun createGameNewsAPI(): GameNewsAPI{
+    private fun createGameNewsAPI(): GameNewsAPI {
         val gson = GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .registerTypeAdapter(me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle::class.java, NouvelleDeserializer())
@@ -64,18 +81,41 @@ class NouvelleRepository(application: Application) {
         return retrofit.create(me.nelsoncastro.pdmparcial2.webserver.GameNewsAPI::class.java)
     }
 
-    private fun getNewss(): DisposableSingleObserver<List<me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle>>{
-        return  object : DisposableSingleObserver<List<me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle>>(){
+    private fun getNewss(Refreshy: SwipeRefreshLayout): DisposableSingleObserver<List<me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle>> {
+        return object : DisposableSingleObserver<List<me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle>>() {
             override fun onSuccess(nouvelles: List<me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle>) {
-                if (!nouvelles.isEmpty()){
-                    for(nou in nouvelles) insert(Nouvelle(nou._id,nou.title,nou.body,nou.description,nou.game,nou.coverImage,nou.created_date))
+                if (!nouvelles.isEmpty()) {
+                    Refreshy.isRefreshing = false
+                    for (nou in nouvelles) insert(Nouvelle(nou._id, nou.title, nou.body, nou.description, nou.game, nou.coverImage, converterDate(nou.created_date).toInt(), 0))
                 }
+
+                Log.d("ERROR", "Falla en el onSuccess ${nouvelles[0].title}")
             }
 
             override fun onError(e: Throwable) {
                 e.printStackTrace()
+                Log.d("ERROR", "Falla en el onError ${e.message}")
             }
 
         }
+    }
+
+    private fun converterDate(date: String): Long {
+        val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+        var lon: Long? = null
+        lon = try {
+            df.parse(date).time
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            0
+        }
+        return lon
+    }
+
+    private fun pirata(date: String): Long = try {
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US).parse(date).time
+    } catch (e: ParseException) {
+        e.printStackTrace()
+        0
     }
 }

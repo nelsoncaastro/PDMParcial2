@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import android.widget.Toast
 import me.nelsoncastro.pdmparcial2.entities.Categorie
 import me.nelsoncastro.pdmparcial2.fragments.Fraggy_Model
 import me.nelsoncastro.pdmparcial2.fragments.Home_Fraggy
@@ -23,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     var mCategoryView: CategorieViewModel? = null
     var mDrawerLayout: DrawerLayout? = null
     var mNavigationView: NavigationView? = null
-    var nomitems: Int? = null
+   // var nomitems: Int? = null
     var toolbar: Toolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +49,7 @@ class MainActivity : AppCompatActivity() {
         setHome()
 
         mNavigationView!!.setNavigationItemSelectedListener { menuItem ->
-
-            nomitems = (mNavigationView!!.menu.findItem(R.id.nouvelle_section).subMenu.size()+ mNavigationView!!.menu.findItem(R.id.jeux).subMenu.size()+ mNavigationView!!.menu.findItem(R.id.extra_section).subMenu.size())
+            //nomitems = (mNavigationView!!.menu.findItem(R.id.nouvelle_section).subMenu.size()+ mNavigationView!!.menu.findItem(R.id.jeux).subMenu.size()+ mNavigationView!!.menu.findItem(R.id.extra_section).subMenu.size())
 
             selectDrawerItem(menuItem)
             true

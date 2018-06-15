@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -40,6 +41,7 @@ class Home_Fraggy : Fragment() {
 
         val sharedPref = view.context.getSharedPreferences("log", Context.MODE_PRIVATE) ?: return
 
+        val swipy = view.findViewById<SwipeRefreshLayout>(R.id.refreshy_home)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewHome)
         val adapter = NouvelleAdapter(view.context)
 
@@ -52,12 +54,17 @@ class Home_Fraggy : Fragment() {
         recyclerView.adapter = adapter
 
         mNouvelleView = ViewModelProviders.of(this).get(NouvelleViewModel::class.java)
-        mNouvelleView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"))
-        mNouvelleView!!.getAllNouvelles().observe(this, Observer<List<Nouvelle>>{ t ->  adapter.setNouvelles(t!!)})
+        swipy.setOnRefreshListener{mNouvelleView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"), swipy)}
+        when (type){
+            "home" -> mNouvelleView!!.getAllNouvelles().observe(this, Observer<List<Nouvelle>>{ t ->  adapter.setNouvelles(t!!)})
+            "favoris" -> mNouvelleView!!.getAllNouvellesFavoris().observe(this, Observer<List<Nouvelle>>{ t ->  adapter.setNouvelles(t!!)})
+            else -> mNouvelleView!!.getAllNouvellesByJeux("lol").observe(this, Observer<List<Nouvelle>>{ t ->  adapter.setNouvelles(t!!)})
+        }
+
     }
 
     companion object {
-        @JvmStatic
+        //@JvmStatic
         fun newInstance(type: String) =
                 Home_Fraggy().apply {
                     arguments = Bundle().apply {

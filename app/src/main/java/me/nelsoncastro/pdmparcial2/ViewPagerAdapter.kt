@@ -5,15 +5,18 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.PagerAdapter
+import me.nelsoncastro.pdmparcial2.fragments.Home_Fraggy
 
-class ViewPagerAdapter(private val contexte: Context,fm: FragmentManager): FragmentPagerAdapter(fm) {
-    override fun getItem(position: Int): Fragment {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+class ViewPagerAdapter(private val contexte: Context,fm: FragmentManager, type: String): FragmentPagerAdapter(fm) {
+
+    private val  nouvelles = Home_Fraggy.newInstance(type)
+
+    override fun getItem(position: Int): Fragment = when (position){
+        0 -> nouvelles
+        else -> nouvelles
     }
 
-    override fun getCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getCount(): Int = 2
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when (position) {
