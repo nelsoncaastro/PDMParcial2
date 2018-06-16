@@ -51,8 +51,6 @@ class Home_Fraggy : Fragment() {
             override fun getSpanSize(position: Int): Int = if (position % 3 == 0) 2 else 1
         }
 
-        Toast.makeText(this.context,type!!, Toast.LENGTH_SHORT).show()
-
         mNouvelleView = ViewModelProviders.of(this).get(NouvelleViewModel::class.java)
         when (type){
             "home" -> {adapter = NouvelleAdapter(view.context, false)
@@ -63,15 +61,14 @@ class Home_Fraggy : Fragment() {
                 mNouvelleView!!.getAllNouvellesFavoris().observe(this, Observer<List<Nouvelle>>{ t ->  adapter!!.setNouvellesFavoris(t!!)})}
 
             else -> {adapter = NouvelleAdapter(view.context, false)
-                mNouvelleView!!.getAllNouvellesByJeux(type!!).observe(this, Observer<List<Nouvelle>>{ t ->  adapter!!.setNouvelles(t!!)})}
+                mNouvelleView!!.getAllNouvellesByJeux(type!!).observe(this, Observer<List<Nouvelle>>{ t ->  adapter!!.setNouvelles(t!!)})
+                swipy.setOnRefreshListener{mNouvelleView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"), swipy)}}
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = manager
-
     }
 
     companion object {
-        //@JvmStatic
         fun newInstance(type: String) =
                 Home_Fraggy().apply {
                     arguments = Bundle().apply {

@@ -32,10 +32,8 @@ class Fraggy_Model: Fragment() {
 
         val tabbything = view.findViewById<TabLayout>(R.id.tabby)
         val viewything = view.findViewById<ViewPager>(R.id.viewy)
-        //val swipy = view.findViewById<SwipeRefreshLayout>(R.id.refreshy_model)
         val adapter = ViewPagerAdapter(view.context,childFragmentManager, type!!)
         viewything.adapter = adapter
-        //Log.d("TYPE", "Fraggy_Model, type= $type")
         tabbything.setupWithViewPager(viewything)
     }
 

@@ -25,7 +25,6 @@ class Settings_Fraggy: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val butty = view.findViewById<Button>(R.id.buttoutty)
-
         butty.setOnClickListener {
             val sharedPref = this.activity?.getSharedPreferences("log", Context.MODE_PRIVATE)
             with(sharedPref!!.edit()){

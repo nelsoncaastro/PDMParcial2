@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Barbe à papa</string>
+    <string name="News">News</string>
     <string name="Game1">League of Legends</string>
     <string name="Game2">Dota2</string>
     <string name="Game3">CS: GO</string>
@@ -13,5 +15,6 @@
     <string name="tab1">News</string>
     <string name="tab2">Players</string>
     <string name="nouvelles_menu">General</string>
+    <string name="jeux_menu">Jeux</string>
     <string name="extra_menu">Extra</string>
 </resources>

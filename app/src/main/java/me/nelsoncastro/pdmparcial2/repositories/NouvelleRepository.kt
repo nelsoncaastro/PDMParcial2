@@ -86,7 +86,7 @@ class NouvelleRepository(application: Application) {
                     val response = chain.proceed(chain.request())
                     if (response.code() != 401) {response} else {
                         //startLogin(contexte as Activity)
-                        //Toast.makeText(contexte, "Su sesión a expirado", Toast.LENGTH_LONG).show()
+                        //Toast.makeText(contexte, "Su sesión ha expirado", Toast.LENGTH_LONG).show()
                         chain.proceed(chain.request())
                     }
                  }.build()

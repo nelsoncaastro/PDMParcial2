@@ -1,6 +1,7 @@
 package me.nelsoncastro.pdmparcial2.webserver
 
 import io.reactivex.Single
+import me.nelsoncastro.pdmparcial2.entitieesapi.Etudiant
 import me.nelsoncastro.pdmparcial2.entitieesapi.Joueur
 import me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle
 import retrofit2.http.*
@@ -19,4 +20,7 @@ interface GameNewsAPI {
 
     @GET("/players")
     fun getPlayers(@Header("Authorization") auth: String): Single<List<Joueur>>
+
+    @GET("/users")
+    fun getUsers(@Header("Authorization") auth: String): Single<List<Etudiant>>
 }
