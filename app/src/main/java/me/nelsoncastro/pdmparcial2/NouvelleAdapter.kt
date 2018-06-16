@@ -37,14 +37,17 @@ class NouvelleAdapter(private val contexte: Context, private val isFavoris: Bool
                 .into(holder.imgbig)
         //holder.favo.setImageResource()
         holder.imgbig.setOnClickListener {
-            contexte.startActivity(Intent(contexte, ViewerActivity::class.java).putStringArrayListExtra("CLAVIER", arrayListOf(
-                    curry.title,
-                    curry.body,
-                    curry.game,
-                    curry.coverImage,
-                    curry.created_date.toString(),
-                    curry.favoris.toString()
-            )))
+            contexte.startActivity(Intent(contexte, ViewerActivity::class.java).putStringArrayListExtra(
+                    "CLAVIER",
+                    arrayListOf(
+                            curry.title,
+                            curry.body,
+                            curry.game,
+                            curry.coverImage,
+                            curry.created_date.toString(),
+                            curry.favoris.toString()
+                    )
+            ))
         }
     }
 
