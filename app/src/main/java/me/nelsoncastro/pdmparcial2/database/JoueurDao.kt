@@ -16,6 +16,9 @@ interface JoueurDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(joueur: Joueur)
 
+    @Query("SELECT * FROM joueur WHERE game=:jeux")
+    fun getJoueurByJeux(jeux: String): LiveData<List<Joueur>>
+
     @Query("DELETE FROM joueur")
     fun deleteAll()
 }

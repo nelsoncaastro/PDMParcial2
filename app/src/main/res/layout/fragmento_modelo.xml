@@ -5,20 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refreshy_model"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewy"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabby">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewy"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+        app:layout_constraintTop_toBottomOf="@+id/tabby" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabby"

@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         val fragment = when(item.itemId){
             R.id.item1 -> Home_Fraggy.newInstance("home")
             R.id.item2 -> Home_Fraggy.newInstance("favoris")
-            else -> Fraggy_Model.newInstance(item.title.toString())
+            else -> Fraggy_Model.newInstance(item.title.toString().toLowerCase())
         }
         toolbar?.title = item.title.toString()
         item.isChecked = true

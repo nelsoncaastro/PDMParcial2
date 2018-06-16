@@ -10,9 +10,10 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import me.nelsoncastro.pdmparcial2.entities.Nouvelle
 
-class NouvelleAdapter(private val contexte: Context): RecyclerView.Adapter<NouvelleAdapter.NouvelleViewHolder>() {
+class NouvelleAdapter(private val contexte: Context, private val isFavoris: Boolean): RecyclerView.Adapter<NouvelleAdapter.NouvelleViewHolder>() {
 
     private var mNouvelle: List<Nouvelle>? = null
+    private var mNouvelleFavoris: List<Nouvelle>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NouvelleViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.single_big, parent, false)
@@ -20,11 +21,11 @@ class NouvelleAdapter(private val contexte: Context): RecyclerView.Adapter<Nouve
     }
 
     override fun getItemCount(): Int {
-        return if (mNouvelle != null) mNouvelle!!.size else 0
+        return if(!isFavoris) {if (mNouvelle != null) mNouvelle!!.size else 0} else {if (mNouvelleFavoris != null) mNouvelleFavoris!!.size else 0}
     }
 
     override fun onBindViewHolder(holder: NouvelleViewHolder, position: Int) {
-        val curry = mNouvelle!![position]
+        val curry = if(!isFavoris){mNouvelle!!} else{mNouvelleFavoris!!}[position]
         holder.titlebig.text = curry.title
         holder.descbig.text = curry.title
         Picasso.with(holder.itemView.context)
@@ -35,8 +36,13 @@ class NouvelleAdapter(private val contexte: Context): RecyclerView.Adapter<Nouve
                 .into(holder.imgbig)
     }
 
-    internal fun setNouvelles(nou: List<Nouvelle>){
+    fun setNouvelles(nou: List<Nouvelle>){
         mNouvelle = nou
+        notifyDataSetChanged()
+    }
+
+    fun setNouvellesFavoris(fou: List<Nouvelle>){
+        mNouvelleFavoris = fou
         notifyDataSetChanged()
     }
 

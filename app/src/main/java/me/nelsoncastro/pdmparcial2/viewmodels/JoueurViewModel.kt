@@ -3,6 +3,7 @@ package me.nelsoncastro.pdmparcial2.viewmodels
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
+import android.support.v4.widget.SwipeRefreshLayout
 import me.nelsoncastro.pdmparcial2.entities.Joueur
 import me.nelsoncastro.pdmparcial2.repositories.JoueurRepository
 
@@ -17,7 +18,9 @@ class JoueurViewModel(application: Application): AndroidViewModel(application) {
 
     fun getAllJoueurs(): LiveData<List<Joueur>> = allJoueurs!!
 
-    fun putUp2date(auth: String){
-        mRepository!!.uptodateJoueurs(auth)
+    fun getAllJoueursByJeux(jeux: String): LiveData<List<Joueur>> = mRepository!!.getAllbyJeux(jeux)
+
+    fun putUp2date(auth: String, Refreshy: SwipeRefreshLayout){
+        mRepository!!.uptodateJoueurs(auth, Refreshy)
     }
 }

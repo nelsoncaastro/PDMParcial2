@@ -2,6 +2,7 @@ package me.nelsoncastro.pdmparcial2.repositories
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
+import android.support.v4.widget.SwipeRefreshLayout
 import com.google.gson.GsonBuilder
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,10 +35,12 @@ class JoueurRepository(application: Application) {
 
     fun getAll(): LiveData<List<Joueur>> = mAllJoueur!!
 
-    fun uptodateJoueurs(auth: String){
+    fun getAllbyJeux(jeux: String): LiveData<List<Joueur>> = mJoueurDao!!.getJoueurByJeux(jeux)
+
+    fun uptodateJoueurs(auth: String, Refreshy: SwipeRefreshLayout){
         compositeeDisposable.add(GameNewsAPI!!.getPlayers(auth).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(getJoueurss()))
+                .subscribeWith(getJoueurss(Refreshy)))
     }
 
     fun insert(joueur: Joueur){
@@ -61,10 +64,11 @@ class JoueurRepository(application: Application) {
         return retrofit.create(me.nelsoncastro.pdmparcial2.webserver.GameNewsAPI::class.java)
     }
 
-    private fun getJoueurss(): DisposableSingleObserver<List<me.nelsoncastro.pdmparcial2.entitieesapi.Joueur>>{
+    private fun getJoueurss(Refreshy: SwipeRefreshLayout): DisposableSingleObserver<List<me.nelsoncastro.pdmparcial2.entitieesapi.Joueur>>{
         return object : DisposableSingleObserver<List<me.nelsoncastro.pdmparcial2.entitieesapi.Joueur>>(){
             override fun onSuccess(joueurs: List<me.nelsoncastro.pdmparcial2.entitieesapi.Joueur>) {
                 if(!joueurs.isEmpty()){
+                    Refreshy.isRefreshing = false
                     for (joue in joueurs) insert(Joueur(joue._id,joue.name,joue.biografia,joue.avatar,joue.game))
                 }
             }

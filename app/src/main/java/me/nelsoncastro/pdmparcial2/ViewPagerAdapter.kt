@@ -6,13 +6,16 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.PagerAdapter
 import me.nelsoncastro.pdmparcial2.fragments.Home_Fraggy
+import me.nelsoncastro.pdmparcial2.fragments.Joueur_Fraggy
 
 class ViewPagerAdapter(private val contexte: Context,fm: FragmentManager, type: String): FragmentPagerAdapter(fm) {
 
-    private val  nouvelles = Home_Fraggy.newInstance(type)
+    private val nouvelles = Home_Fraggy.newInstance(type)
+    private val joueurs = Joueur_Fraggy.newInstance(type)
 
     override fun getItem(position: Int): Fragment = when (position){
         0 -> nouvelles
+        1 -> joueurs
         else -> nouvelles
     }
 
