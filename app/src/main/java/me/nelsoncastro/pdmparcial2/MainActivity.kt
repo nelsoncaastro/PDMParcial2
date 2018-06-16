@@ -15,6 +15,7 @@ import android.view.MenuItem
 import me.nelsoncastro.pdmparcial2.entities.Categorie
 import me.nelsoncastro.pdmparcial2.fragments.Fraggy_Model
 import me.nelsoncastro.pdmparcial2.fragments.Home_Fraggy
+import me.nelsoncastro.pdmparcial2.fragments.Settings_Fraggy
 import me.nelsoncastro.pdmparcial2.viewmodels.CategorieViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -49,13 +50,9 @@ class MainActivity : AppCompatActivity() {
         setHome()
 
         mNavigationView!!.setNavigationItemSelectedListener { menuItem ->
-            //nomitems = (mNavigationView!!.menu.findItem(R.id.nouvelle_section).subMenu.size()+ mNavigationView!!.menu.findItem(R.id.jeux).subMenu.size()+ mNavigationView!!.menu.findItem(R.id.extra_section).subMenu.size())
-
             selectDrawerItem(menuItem)
             true
         }
-
-
     }
 
     private fun checkToken(value: String?){
@@ -66,32 +63,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun selectDrawerItem(item: MenuItem){
-        /**var fragment: Fragment? = null
-
-        //Toast.makeText(this, nomitems.toString(), Toast.LENGTH_LONG).show()
-
-        //for(0 until combien)
-
-
-
-        /**val fragment: Fragment = Fragment().apply {
-            Bundle().putString()
-        }**/
-
-        val fragmentClass = when(item.itemId){
-            R.id.item1 -> Home_Fraggy::class.java
-            else -> Home_Fraggy::class.java
-        }
-
-        try {
-            fragment = fragmentClass.newInstance() as Fragment
-        } catch (e: ClassCastException){
-            e.printStackTrace()
-        }**/
-        //val fragment = Home_Fraggy.newInstance(item.title.toString())
         val fragment = when(item.itemId){
             R.id.item1 -> Home_Fraggy.newInstance("home")
             R.id.item2 -> Home_Fraggy.newInstance("favoris")
+            R.id.item6 -> Settings_Fraggy()
             else -> Fraggy_Model.newInstance(item.title.toString().toLowerCase())
         }
         toolbar?.title = item.title.toString()
@@ -117,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setHome(){
-        mNavigationView!!.menu.findItem(R.id.item1).isChecked = true
+        //mNavigationView!!.menu.findItem(R.id.item1).isChecked = true
         val fragment = Home_Fraggy.newInstance("home")
         supportFragmentManager.beginTransaction()
                 .replace(R.id.containermain, fragment)

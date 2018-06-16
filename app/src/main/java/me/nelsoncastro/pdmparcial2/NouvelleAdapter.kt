@@ -1,6 +1,7 @@
 package me.nelsoncastro.pdmparcial2
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,17 @@ class NouvelleAdapter(private val contexte: Context, private val isFavoris: Bool
                 .centerCrop()
                 .error(R.drawable.himym)
                 .into(holder.imgbig)
+        //holder.favo.setImageResource()
+        holder.imgbig.setOnClickListener {
+            contexte.startActivity(Intent(contexte, ViewerActivity::class.java).putStringArrayListExtra("CLAVIER", arrayListOf(
+                    curry.title,
+                    curry.body,
+                    curry.game,
+                    curry.coverImage,
+                    curry.created_date.toString(),
+                    curry.favoris.toString()
+            )))
+        }
     }
 
     fun setNouvelles(nou: List<Nouvelle>){
@@ -50,5 +62,6 @@ class NouvelleAdapter(private val contexte: Context, private val isFavoris: Bool
         internal val imgbig: ImageView = itemView.findViewById(R.id.image_nouvelle_big)
         internal val titlebig: TextView = itemView.findViewById(R.id.title_nouvelle_big)
         internal val descbig: TextView = itemView.findViewById(R.id.desc_nouvelle_big)
+        internal val favo: ImageView = itemView.findViewById(R.id.favo)
     }
 }

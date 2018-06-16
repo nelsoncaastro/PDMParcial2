@@ -13,13 +13,13 @@ interface NouvelleDao {
     @Query("SELECT * FROM nouvelle ORDER BY date DESC")
     fun getAll(): LiveData<List<Nouvelle>>
 
-    @Query("SELECT * FROM nouvelle WHERE game =:jeux")
+    @Query("SELECT * FROM nouvelle WHERE game =:jeux ORDER BY date DESC")
     fun getNouvelleByJeux(jeux: String): LiveData<List<Nouvelle>>
 
     @Query("UPDATE nouvelle SET favoris=:value WHERE id=:id")
     fun setFavoris(value: Int, id: String)
 
-    @Query("SELECT * FROM nouvelle WHERE favoris=1")
+    @Query("SELECT * FROM nouvelle WHERE favoris=1 ORDER BY date DESC")
     fun getAllNouvelleFavoris(): LiveData<List<Nouvelle>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

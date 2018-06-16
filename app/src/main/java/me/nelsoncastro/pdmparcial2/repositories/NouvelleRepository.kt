@@ -1,20 +1,26 @@
 package me.nelsoncastro.pdmparcial2.repositories
 
+import android.app.Activity
 import android.app.Application
 import android.arch.lifecycle.LiveData
+import android.content.Intent
 import android.support.v4.widget.SwipeRefreshLayout
 import android.util.Log
+import android.widget.Toast
 import com.google.gson.GsonBuilder
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import me.nelsoncastro.pdmparcial2.LoginActivity
+import me.nelsoncastro.pdmparcial2.MainActivity
 import me.nelsoncastro.pdmparcial2.database.NouvelleDao
 import me.nelsoncastro.pdmparcial2.database.RoomDatabase
 import me.nelsoncastro.pdmparcial2.entities.Nouvelle
 import me.nelsoncastro.pdmparcial2.webserver.GameNewsAPI
 import me.nelsoncastro.pdmparcial2.webserver.deserializers.NouvelleDeserializer
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,6 +33,7 @@ class NouvelleRepository(application: Application) {
     var mNouvelleDao: NouvelleDao? = null
     var mAllNouvelle: LiveData<List<Nouvelle>>? = null
     var GameNewsAPI: GameNewsAPI? = null
+    val contexte = application.applicationContext
     val compositeDisposable = CompositeDisposable()
     val compositeeDisposable = CompositeDisposable()
     val compositeeeDisposable = CompositeDisposable()
@@ -72,8 +79,20 @@ class NouvelleRepository(application: Application) {
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .registerTypeAdapter(me.nelsoncastro.pdmparcial2.entitieesapi.Nouvelle::class.java, NouvelleDeserializer())
                 .create()
+        val bouncer = OkHttpClient
+                .Builder()
+                .addInterceptor {
+                    chain ->
+                    val response = chain.proceed(chain.request())
+                    if (response.code() != 401) {response} else {
+                        //startLogin(contexte as Activity)
+                        //Toast.makeText(contexte, "Su sesión a expirado", Toast.LENGTH_LONG).show()
+                        chain.proceed(chain.request())
+                    }
+                 }.build()
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://gamenewsuca.herokuapp.com")
+                .client(bouncer)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
@@ -117,5 +136,10 @@ class NouvelleRepository(application: Application) {
     } catch (e: ParseException) {
         e.printStackTrace()
         0
+    }
+
+    private fun startLogin(activity: Activity){
+        activity.startActivity(Intent(activity, LoginActivity::class.java))
+        activity.finish()
     }
 }

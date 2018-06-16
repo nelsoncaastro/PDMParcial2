@@ -10,7 +10,7 @@ import me.nelsoncastro.pdmparcial2.entities.Categorie
 @Dao
 interface CategorieDao {
 
-    @Query("SELECT * FROM categorie")
+    @Query("SELECT * FROM categorie ORDER BY name ASC")
     fun getAll(): LiveData<List<Categorie>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

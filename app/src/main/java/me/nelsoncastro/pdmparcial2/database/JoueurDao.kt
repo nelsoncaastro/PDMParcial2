@@ -10,13 +10,13 @@ import me.nelsoncastro.pdmparcial2.entities.Joueur
 @Dao
 interface JoueurDao {
 
-    @Query("SELECT * FROM joueur")
+    @Query("SELECT * FROM joueur ORDER BY name ASC")
     fun getAll(): LiveData<List<Joueur>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(joueur: Joueur)
 
-    @Query("SELECT * FROM joueur WHERE game=:jeux")
+    @Query("SELECT * FROM joueur WHERE game=:jeux ORDER BY name ASC")
     fun getJoueurByJeux(jeux: String): LiveData<List<Joueur>>
 
     @Query("DELETE FROM joueur")
