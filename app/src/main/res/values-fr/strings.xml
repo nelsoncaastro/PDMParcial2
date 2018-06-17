@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Barbe à papa</string>
-    <string name="News">News</string>
+    <string name="app_name">Nouvelle du Jeu</string>
+    <string name="News">Nouvelles</string>
     <string name="Game1">League of Legends</string>
     <string name="Game2">Dota2</string>
     <string name="Game3">CS: GO</string>
-    <string name="Settings">Settings</string>
-    <string name="Favorites">Favorites</string>
-    <string name="query_hint_main">Search</string>
-    <string name="username_hint">Username</string>
-    <string name="password_hint">Password</string>
-    <string name="button_login">Dale candela</string>
+    <string name="Settings">Paramètres</string>
+    <string name="Favorites">Favoris</string>
+    <string name="query_hint_main">Rechecher</string>
+    <string name="username_hint">Nom d\'utilisateur</string>
+    <string name="password_hint">Mot de passe</string>
+    <string name="button_login">Se connecter</string>
     <string name="saved_token">token</string>
-    <string name="tab1">News</string>
-    <string name="tab2">Players</string>
-    <string name="nouvelles_menu">General</string>
+    <string name="tab1">Nouvelles</string>
+    <string name="tab2">Joueurs</string>
+    <string name="nouvelles_menu">Général</string>
     <string name="jeux_menu">Jeux</string>
     <string name="extra_menu">Extra</string>
     <string name="search_text">Rechercher</string>
-    <string name="no_conexion">No hay conexión</string>
-    <string name="sesion_expiro">Su sesión ha expirado</string>
+    <string name="no_conexion">Aucune connexion disponible</string>
+    <string name="sesion_expiro">Votre session a expiré</string>
 </resources>

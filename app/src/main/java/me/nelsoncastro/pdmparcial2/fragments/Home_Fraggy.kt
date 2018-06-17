@@ -68,7 +68,7 @@ class Home_Fraggy : Fragment() {
 
         mNouvelleView = ViewModelProviders.of(this).get(NouvelleViewModel::class.java)
         when (type){
-            "home" -> {adapter = NouvelleAdapter(view.context, false)
+            "home" -> {adapter = NouvelleAdapter(view.context, this, false)
                 mNouvelleView!!.getAllNouvelles().observe(this, Observer<List<Nouvelle>>{ t ->  adapter!!.setNouvelles(t!!)})
                 swipy.setOnRefreshListener{
                     if (checkConnectivity(conny)) {mNouvelleView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"), swipy)}
@@ -76,11 +76,11 @@ class Home_Fraggy : Fragment() {
                         swipy.isRefreshing = false} }
             }
 
-            "favoris" -> {adapter = NouvelleAdapter(view.context, true)
+            "favoris" -> {adapter = NouvelleAdapter(view.context,this, true)
                 mNouvelleView!!.getAllNouvellesFavoris().observe(this, Observer<List<Nouvelle>>{ t ->  adapter!!.setNouvellesFavoris(t!!)})
             }
 
-            else -> {adapter = NouvelleAdapter(view.context, false)
+            else -> {adapter = NouvelleAdapter(view.context,this, false)
                 mNouvelleView!!.getAllNouvellesByJeux(type!!).observe(this, Observer<List<Nouvelle>>{ t ->  adapter!!.setNouvelles(t!!)})
                 swipy.setOnRefreshListener{
                     if (checkConnectivity(conny)) mNouvelleView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"), swipy)

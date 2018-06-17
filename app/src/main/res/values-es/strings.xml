@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Barbe à papa</string>
+    <string name="app_name">Nouvelle du Jeu</string>
     <string name="News">Noticias</string>
     <string name="Game1">League of Legends</string>
     <string name="Game2">Dota2</string>
     <string name="Game3">CS: GO</string>
-    <string name="Settings">Settings</string>
-    <string name="Favorites">Favorites</string>
-    <string name="query_hint_main">Search</string>
-    <string name="username_hint">Username</string>
-    <string name="password_hint">Password</string>
-    <string name="button_login">Dale candela</string>
+    <string name="Settings">Ajustes</string>
+    <string name="Favorites">Favoritos</string>
+    <string name="query_hint_main">Buscar</string>
+    <string name="username_hint">Nombre de usuario</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="button_login">Iniciar sesión</string>
     <string name="saved_token">token</string>
-    <string name="tab1">News</string>
-    <string name="tab2">Players</string>
+    <string name="tab1">Noticias</string>
+    <string name="tab2">Jugadores</string>
     <string name="nouvelles_menu">General</string>
-    <string name="jeux_menu">Jeux</string>
+    <string name="jeux_menu">Juegos</string>
     <string name="extra_menu">Extra</string>
-    <string name="search_text">Rechercher</string>
-    <string name="no_conexion">No hay conexión</string>
+    <string name="search_text">Buscar</string>
+    <string name="no_conexion">No hay conexión disponible</string>
     <string name="sesion_expiro">Su sesión ha expirado</string>
 </resources>
