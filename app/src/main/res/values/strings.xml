@@ -16,4 +16,5 @@
     <string name="nouvelles_menu">General</string>
     <string name="jeux_menu">Jeux</string>
     <string name="extra_menu">Extra</string>
+    <string name="search_text">Rechercher</string>
 </resources>

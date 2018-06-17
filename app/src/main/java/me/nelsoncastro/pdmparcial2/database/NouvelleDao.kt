@@ -16,6 +16,9 @@ interface NouvelleDao {
     @Query("SELECT * FROM nouvelle WHERE game =:jeux ORDER BY date DESC")
     fun getNouvelleByJeux(jeux: String): LiveData<List<Nouvelle>>
 
+    @Query("SELECT * FROM nouvelle WHERE title LIKE :titre ORDER BY date DESC")
+    fun getNouvelleByTitre(titre: String): LiveData<List<Nouvelle>>
+
     @Query("UPDATE nouvelle SET favoris=:value WHERE id=:id")
     fun setFavoris(value: Int, id: String)
 

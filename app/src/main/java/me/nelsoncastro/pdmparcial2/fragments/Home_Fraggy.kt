@@ -3,19 +3,24 @@ package me.nelsoncastro.pdmparcial2.fragments
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.SearchView
+import android.view.*
+import android.widget.EditText
 import android.widget.Toast
 import me.nelsoncastro.pdmparcial2.NouvelleAdapter
 import me.nelsoncastro.pdmparcial2.R
 import me.nelsoncastro.pdmparcial2.viewmodels.NouvelleViewModel
 import me.nelsoncastro.pdmparcial2.entities.Nouvelle
+import android.widget.TextView
+
+
 
 
 
@@ -25,9 +30,14 @@ class Home_Fraggy : Fragment() {
     private var mNouvelleView: NouvelleViewModel? = null
     private var type: String? = null
     private var adapter: NouvelleAdapter? = null
+    private var queryResult: List<Nouvelle> = ArrayList()
+    private var searchy: SearchView? = null
+    private lateinit var sharedPref: SharedPreferences
+    private lateinit var swipy: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
         arguments?.let {
             type = it.getString(CLE)
@@ -41,9 +51,9 @@ class Home_Fraggy : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPref = view.context.getSharedPreferences("log", Context.MODE_PRIVATE) ?: return
+        sharedPref = view.context.getSharedPreferences("log", Context.MODE_PRIVATE) ?: return
+        swipy = view.findViewById(R.id.refreshy_home)
 
-        val swipy = view.findViewById<SwipeRefreshLayout>(R.id.refreshy_home)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewHome)
 
         val manager = GridLayoutManager(view.context, 2, GridLayoutManager.VERTICAL, false)
@@ -67,6 +77,55 @@ class Home_Fraggy : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = manager
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.searchy_menu, menu)
+
+        searchy = menu?.findItem(R.id.searchy)?.actionView as SearchView
+        searchy?.isSubmitButtonEnabled = true
+
+        val query = searchy?.findViewById<EditText>(android.support.v7.appcompat.R.id.search_src_text)
+        query?.hint = getString(R.string.query_hint_main)
+        query?.setHintTextColor(Color.WHITE)
+        query?.setTextColor(resources.getColor(R.color.colorAccent))
+        //query?.setTextAppearance(R.style.LettersLogin)
+
+        searchy?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                rechercherNouvelles(query)
+                searchy?.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                rechercherNouvelles(newText)
+                return true
+            }
+        })
+    }
+
+    private fun riptide(listy: List<Nouvelle>){
+        var auxi: List<Nouvelle> = ArrayList<Nouvelle>()
+        when(type){
+            "home" ->{auxi=listy
+            adapter!!.setNouvelles(auxi)
+            }
+            "favoris" ->{auxi=listy
+            adapter!!.setNouvellesFavoris(auxi)
+            }
+            else ->{
+                for (nou in listy){
+                    if (nou.game == type) auxi.apply { nou }
+                }
+                adapter!!.setNouvelles(auxi)
+            }
+        }
+    }
+
+
+
+    private fun rechercherNouvelles(nou: String)= mNouvelleView!!.getAllNouvellesByTitre("%$nou%").observe(this, Observer<List<Nouvelle>>{ t -> if (t!=null) riptide(t) else return@Observer})
 
     companion object {
         fun newInstance(type: String) =

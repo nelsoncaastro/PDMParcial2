@@ -51,6 +51,8 @@ class NouvelleRepository(application: Application) {
 
     fun getAllFavoris(): LiveData<List<Nouvelle>> = mNouvelleDao!!.getAllNouvelleFavoris()
 
+    fun getAllByTitre(titre: String): LiveData<List<Nouvelle>> = mNouvelleDao!!.getNouvelleByTitre(titre)
+
     fun setFavoris(value: Int, id: String) {
         compositeeeDisposable.add(Observable
                 .fromCallable { mNouvelleDao!!.setFavoris(value, id) }
@@ -107,8 +109,6 @@ class NouvelleRepository(application: Application) {
                     Refreshy.isRefreshing = false
                     for (nou in nouvelles) insert(Nouvelle(nou._id, nou.title, nou.body, nou.description, nou.game, nou.coverImage, converterDate(nou.created_date).toInt(), 0))
                 }
-
-                Log.d("ERROR", "Falla en el onSuccess ${nouvelles[0].title}")
             }
 
             override fun onError(e: Throwable) {

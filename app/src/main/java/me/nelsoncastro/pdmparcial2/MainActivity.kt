@@ -30,10 +30,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val sharedPref = this.getSharedPreferences("log", Context.MODE_PRIVATE) ?: return
-        /**with(sharedPref.edit()){
-            clear()
-            apply()
-        }**/
+
         checkToken(if (sharedPref.contains(getString(R.string.saved_token))) sharedPref.getString(getString(R.string.saved_token),"nelson dog") else "nelson dog")
         setContentView(R.layout.activity_main)
 

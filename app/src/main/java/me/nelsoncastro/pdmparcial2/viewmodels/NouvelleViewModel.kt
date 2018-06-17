@@ -26,6 +26,8 @@ class NouvelleViewModel(application: Application): AndroidViewModel(application)
 
     fun getAllNouvellesByJeux(jeux: String): LiveData<List<Nouvelle>> = mRepository!!.getAllByJeux(jeux)
 
+    fun getAllNouvellesByTitre(titre: String): LiveData<List<Nouvelle>> = mRepository!!.getAllByTitre(titre)
+
     fun setFavoris(value: Int, id: String) = mRepository!!.setFavoris(value, id)
 
 }
