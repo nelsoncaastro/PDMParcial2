@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_login">
 
     <Button
         android:id="@+id/buttoutty"
@@ -17,7 +18,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:text="Salgamos de aquí papa"
+        android:text="@string/settings_exit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

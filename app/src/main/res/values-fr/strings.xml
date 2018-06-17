@@ -20,4 +20,5 @@
     <string name="search_text">Rechercher</string>
     <string name="no_conexion">Aucune connexion disponible</string>
     <string name="sesion_expiro">Votre session a expiré</string>
+    <string name="settings_exit">Salgamos de aquí papa</string>
 </resources>

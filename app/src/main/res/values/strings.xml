@@ -19,4 +19,5 @@
     <string name="search_text">Search</string>
     <string name="no_conexion">No connection available</string>
     <string name="sesion_expiro">Your session has expired</string>
+    <string name="settings_exit">Sign out</string>
 </resources>
