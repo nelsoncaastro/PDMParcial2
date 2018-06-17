@@ -2,12 +2,14 @@ package me.nelsoncastro.pdmparcial2.repositories
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
+import android.widget.Toast
 import com.google.gson.GsonBuilder
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import me.nelsoncastro.pdmparcial2.R
 import me.nelsoncastro.pdmparcial2.database.CategorieDao
 import me.nelsoncastro.pdmparcial2.database.RoomDatabase
 import me.nelsoncastro.pdmparcial2.entities.Categorie
@@ -24,6 +26,7 @@ class CategorieRepository(application: Application) {
     var GameNewsAPI: GameNewsAPI? = null
     val compositeDisposable = CompositeDisposable()
     val compositeeDisposable = CompositeDisposable()
+    val contexte = application.applicationContext
 
     init {
         val db = RoomDatabase.getDatabase(application)
@@ -73,6 +76,7 @@ class CategorieRepository(application: Application) {
 
             override fun onError(e: Throwable) {
                 e.printStackTrace()
+                Toast.makeText(contexte, contexte.getString(R.string.sesion_expiro), Toast.LENGTH_LONG).show()
             }
 
         }

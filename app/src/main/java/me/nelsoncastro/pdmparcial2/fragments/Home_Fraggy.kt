@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
@@ -34,6 +36,7 @@ class Home_Fraggy : Fragment() {
     private var searchy: SearchView? = null
     private lateinit var sharedPref: SharedPreferences
     private lateinit var swipy: SwipeRefreshLayout
+    var conny: ConnectivityManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +54,9 @@ class Home_Fraggy : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        conny = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         sharedPref = view.context.getSharedPreferences("log", Context.MODE_PRIVATE) ?: return
+
         swipy = view.findViewById(R.id.refreshy_home)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewHome)
@@ -65,14 +70,22 @@ class Home_Fraggy : Fragment() {
         when (type){
             "home" -> {adapter = NouvelleAdapter(view.context, false)
                 mNouvelleView!!.getAllNouvelles().observe(this, Observer<List<Nouvelle>>{ t ->  adapter!!.setNouvelles(t!!)})
-                swipy.setOnRefreshListener{mNouvelleView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"), swipy)}}
+                swipy.setOnRefreshListener{
+                    if (checkConnectivity(conny)) {mNouvelleView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"), swipy)}
+                    else {Toast.makeText(activity?.applicationContext, getString(R.string.no_conexion), Toast.LENGTH_LONG).show()
+                        swipy.isRefreshing = false} }
+            }
 
             "favoris" -> {adapter = NouvelleAdapter(view.context, true)
-                mNouvelleView!!.getAllNouvellesFavoris().observe(this, Observer<List<Nouvelle>>{ t ->  adapter!!.setNouvellesFavoris(t!!)})}
+                mNouvelleView!!.getAllNouvellesFavoris().observe(this, Observer<List<Nouvelle>>{ t ->  adapter!!.setNouvellesFavoris(t!!)})
+            }
 
             else -> {adapter = NouvelleAdapter(view.context, false)
                 mNouvelleView!!.getAllNouvellesByJeux(type!!).observe(this, Observer<List<Nouvelle>>{ t ->  adapter!!.setNouvelles(t!!)})
-                swipy.setOnRefreshListener{mNouvelleView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"), swipy)}}
+                swipy.setOnRefreshListener{
+                    if (checkConnectivity(conny)) mNouvelleView!!.putUp2date("Beared " + sharedPref.getString(getString(R.string.saved_token),"nelson dog"), swipy)
+                    else {Toast.makeText(activity?.applicationContext, getString(R.string.no_conexion), Toast.LENGTH_LONG).show()
+                        swipy.isRefreshing = false} }}
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = manager
@@ -89,7 +102,6 @@ class Home_Fraggy : Fragment() {
         query?.hint = getString(R.string.query_hint_main)
         query?.setHintTextColor(Color.WHITE)
         query?.setTextColor(resources.getColor(R.color.colorAccent))
-        //query?.setTextAppearance(R.style.LettersLogin)
 
         searchy?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -123,7 +135,7 @@ class Home_Fraggy : Fragment() {
         }
     }
 
-
+    private fun checkConnectivity(conny: ConnectivityManager?) = conny?.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)?.state == NetworkInfo.State.CONNECTED || conny?.getNetworkInfo(ConnectivityManager.TYPE_WIFI)?.state == NetworkInfo.State.CONNECTED
 
     private fun rechercherNouvelles(nou: String)= mNouvelleView!!.getAllNouvellesByTitre("%$nou%").observe(this, Observer<List<Nouvelle>>{ t -> if (t!=null) riptide(t) else return@Observer})
 

@@ -15,6 +15,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import me.nelsoncastro.pdmparcial2.LoginActivity
 import me.nelsoncastro.pdmparcial2.MainActivity
+import me.nelsoncastro.pdmparcial2.R
 import me.nelsoncastro.pdmparcial2.database.NouvelleDao
 import me.nelsoncastro.pdmparcial2.database.RoomDatabase
 import me.nelsoncastro.pdmparcial2.entities.Nouvelle
@@ -88,7 +89,6 @@ class NouvelleRepository(application: Application) {
                     val response = chain.proceed(chain.request())
                     if (response.code() != 401) {response} else {
                         //startLogin(contexte as Activity)
-                        //Toast.makeText(contexte, "Su sesión ha expirado", Toast.LENGTH_LONG).show()
                         chain.proceed(chain.request())
                     }
                  }.build()
@@ -113,6 +113,8 @@ class NouvelleRepository(application: Application) {
 
             override fun onError(e: Throwable) {
                 e.printStackTrace()
+                Toast.makeText(contexte, contexte.getString(R.string.sesion_expiro), Toast.LENGTH_LONG).show()
+                Refreshy.isRefreshing = false
                 Log.d("ERROR", "Falla en el onError ${e.message}")
             }
 
