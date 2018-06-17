@@ -106,17 +106,17 @@ class Home_Fraggy : Fragment() {
     }
 
     private fun riptide(listy: List<Nouvelle>){
-        var auxi: List<Nouvelle> = ArrayList<Nouvelle>()
+        var auxi = ArrayList<Nouvelle>()
         when(type){
-            "home" ->{auxi=listy
+            "home" ->{auxi= listy as ArrayList<Nouvelle>
             adapter!!.setNouvelles(auxi)
             }
-            "favoris" ->{auxi=listy
+            "favoris" ->{auxi= listy as ArrayList<Nouvelle>
             adapter!!.setNouvellesFavoris(auxi)
             }
             else ->{
                 for (nou in listy){
-                    if (nou.game == type) auxi.apply { nou }
+                    if (nou.game == type)  auxi.add(nou)
                 }
                 adapter!!.setNouvelles(auxi)
             }
